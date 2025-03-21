@@ -1,0 +1,78 @@
+%%
+clc;
+clear;
+close all; %chiude tutte le figure
+
+v = [10,20,30,40];
+disp(v);
+disp(v(3));
+disp(v(end));
+disp(v(end-1));
+
+%%
+clc
+clear
+close all
+m = [10, 20, 30; 40, 50 ,60; 70, 80, 90; 100, 110, 120];
+dismp(m);
+disp(m(3,2));
+disp(m(3,:));
+disp(m(:,1));
+disp(size(m));
+disp(size(m,3));
+
+%%
+clc
+clear
+close all
+n = zeros(2,3);
+disp(n);
+n1 = ones(2,3);
+disp(n1);
+n2 = eye(5);
+disp(n2);
+
+%%
+clc
+clear
+close all
+
+t_inizio = 0; %secondi
+t_fine = 1; %secondi
+fs = 1000; %frequenza di campionamento
+ts = 1/fs;
+t = [t_inizio:ts:t_fine];
+F = 5; % frequenza della sinusoide
+y = sin(2*pi*F*t);
+y2 = cos(2*pi*F*t);
+figure;
+plot(t,y,'g', LineWidth= 3); %'g' e' il colore che uso per plottare il grafico, lineWidrth aumenta lo spessore della linea del grafico
+xlabel('tempo [s]');
+ylabel('ampiezza');
+ylim([-2 2]); %aumento la larghezza della visione dell asse y
+xlim([-1 2]); %aumento la larghezza della visione dell asse x
+grid on
+hold on
+plot(t,y2,'b', LineWidth= 3);%plotto il grafico del coseno sullo stesso grafico del seno
+
+%%
+clc
+clear
+close all
+
+delta_t = 0.5e-6; %tempo che passa tra l'emissione e la ricezione di un segnale es radar.
+distanza = calcolatore_distanza(delta_t); % funzione che abbiamo creato per calcolare la distenza in base al delta temporale
+fprintf("La distanza è %2.4f metri\n", distanza);
+
+%%
+clc
+clear
+close all
+
+t_start = 0;
+t_end = 6;
+t_step = 0.001;
+
+t = [t_start:t_step:t_end];
+F = 1;
+f = 
