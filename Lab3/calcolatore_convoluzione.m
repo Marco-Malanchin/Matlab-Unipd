@@ -11,14 +11,14 @@ function [y, t_y] = calcolatore_convoluzione(x, t_x, h, t_h)
 
     t_min = t_x(1) + t_h(1);
 
-    t_y = t_min + (0:Ly-1)*dt;
+    t_y = t_min + (0:Ly-1)*dt_x;
 
     y = zeros(1, Ly);
 
     for n = 1:Ly
         for k = 1:Lh
             if (n-k+1 > 0) && (n-k+1 <= Lx)
-                y(n) = y(n) + (dt*x(n-k+1)*h(k));
+                y(n) = y(n) + (dt_h*x(n-k+1)*h(k));
             end
 
         end
