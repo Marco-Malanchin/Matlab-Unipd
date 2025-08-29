@@ -13,9 +13,10 @@ disp(v(end-1));
 clc
 clear
 close all
-m = [10, 20, 30; 40, 50 ,60; 70, 80, 90; 100, 110, 120];
+m = [10, 20, 30; 40, 50 ,60; 70, 80, 90; 100, 110, 120]; %matrice 4x3
 dismp(m);
-disp(m(3,2));
+disp(m(3,2)); % stampa l’elemento della terza riga, seconda colonna di m
+              % cioè 80
 disp(m(3,:));
 disp(m(:,1));
 disp(size(m));
@@ -25,11 +26,11 @@ disp(size(m,3));
 clc
 clear
 close all
-n = zeros(2,3);
+n = zeros(2,3); %matrice 2x3 fatta di 0
 disp(n);
 n1 = ones(2,3);
 disp(n1);
-n2 = eye(5);
+n2 = eye(5); %crea una matrice identità 5×5 e la assegna alla variabile n2.
 disp(n2);
 
 %%
@@ -41,7 +42,7 @@ t_inizio = 0; %secondi
 t_fine = 1; %secondi
 fs = 1000; %frequenza di campionamento
 ts = 1/fs;
-t = [t_inizio:ts:t_fine];
+t = [t_inizio:ts:t_fine]; %crea un vettore che parte da 0, cresce a passi di 0.001 secondi e arriva fino a 1 secondo. In totale hai (t_fine - t_inizio)/ts + 1 = (1 - 0)/0.001 + 1 = 1001 campioni.
 F = 5; % frequenza della sinusoide
 y = sin(2*pi*F*t);
 y2 = cos(2*pi*F*t);
