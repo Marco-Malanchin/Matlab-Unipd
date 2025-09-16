@@ -86,3 +86,79 @@ ylabel('[V]');
 grid on
 title('Segnale filtrato')
 xlim([-10 10]);
+
+
+USO TRASFORMATE
+clear all
+
+%RAPPRESENTO IL SEGNALE NEL DOMINIO DEL TEMPO 
+N = 5000;
+T1 = 100;
+T2 = 2;
+dt = 2*T1/N;
+
+A = 3;
+
+t = [0:N-1]*dt-T1;
+
+s = A*(abs(t) <= T2);
+
+figure;
+sgtitle('Filtraggio attraverso trasformate')
+
+subplot(4,1,1);
+plot(t, s, 'LineWidth',1.5)
+grid on 
+xlabel('Tempo [s]')
+ylabel('[V]')
+ylim([0 A+0.5])
+title('Segnale nel tempo') 
+xlim([-10 10])
+
+%CALCOLO LA TRASFORMATA DEL SEGNALE
+s = [s(N/2+1:N), s(1:N/2)];
+S = dt*fft(s);
+S = [S(N/2+1:N), S(1:N/2)];
+
+df = 1/(N*dt);
+f = [-N/2:N/2-1]*df;
+
+subplot(4,1,2);
+plot(f, real(S), 'LineWidth',1.5, 'Color', 'b', 'DisplayName','Parte reale')
+hold on 
+plot(f, imag(S), 'LineWidth',1.5, 'Color', '#4DBEEE', 'DisplayName','Parte immaginaria')
+grid on 
+xlabel('Frequenza [Hz]')
+ylabel('[Vs]')
+title('Trasformata del segnale');
+legend
+
+%RAPPRESENTO IL FILTRO NEL DOMINIO DELLA FREQUENZA 
+G = 1*(abs(f) <= 0.5);
+
+subplot(4,1,3);
+plot(f, real(G), 'LineWidth',1.5, 'Color', 'red', 'DisplayName','Parte reale');
+hold on 
+plot(f, imag(G), 'LineWidth',1.5, 'Color', '#FF00FF', 'DisplayName','Parte immaginaria');
+grid on 
+xlabel('Frequenza [Hz]')
+ylabel('[Vs]')
+xlim([-5 5])
+title('Risposta in frequenza del filtro');
+legend
+
+%MOLTIPLICO LE TRASFORMATE
+Y = S.*G;
+Y = [Y(N/2+1:N), Y(1:N/2)];
+
+%CALCOLO LA TRASFORMATA INVERSA DELL'USCITA E RAPPRESENTAZIONE
+y = N*df*ifft(Y);
+y = [y(N/2+1:N), y(1:N/2)];
+
+subplot(4,1,4);
+plot(t, y, 'LineWidth',1.5, 'Color', 'black')
+grid on 
+xlabel('Tempo [s]')
+ylabel('[V]')
+title('Segnale filtrato');
+xlim([-10 10]);
