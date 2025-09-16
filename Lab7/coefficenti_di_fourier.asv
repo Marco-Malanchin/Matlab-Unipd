@@ -1,15 +1,15 @@
 clc
 clear all
 close all
-N = 30;
-Tp = 1;
+N = 30; %numero campioni
+Tp = 1; %lunghezza periodo, 1 s
 
-dt = Tp/N;
+dt = Tp/N; %Calcola il passo temporale:
 
-t = [0:N-1]*dt;
+t = [0:N-1]*dt; %creo il vettore dei tempi
 
-fcos = 1;
-s = cos(2*pi*fcos*t);
+fcos = 1; %frequenza del coseno.
+s = cos(2*pi*fcos*t); %è un coseno a 1 Hz, campionato in 30 punti lungo 1 secondo.
 
 figure;
 plot(t, s);
@@ -17,10 +17,10 @@ xlabel('t [s]')
 ylabel('ampiezza')
 grid on
 
-S = dt/Tp*fft(s);
+S = dt/Tp*fft(s); %calcolo la dft del segnale, normalizzandola per dt/tp
 S = [S(N/2 + 1:N), S(1:N/2)]; %creo un vettore con la trasformata appena creata, mettendo la seconda metà come primo elemento e la prima metà come secondo, in questo modo la trasformata sarà graficamente giusta
-F = 1/Tp;
-f = [-N/2:N/2-1]*F;
+F = 1/Tp; %è la risoluzione in frequenza: distanza fra due righe spettrali.
+f = [-N/2:N/2-1]*F; %vettore delle frequenze
 figure;
 stem(f, abs(S), 'filled');
 xlabel('Frequenza [Hz]')
@@ -31,16 +31,16 @@ ylim([-0.5 1])
 clc
 clear all
 close all
-N = 30;
-Tp = 1;
+N = 30; %numero campioni
+Tp = 1; %periodo 1s
 
-dt = Tp/N;
+dt = Tp/N; %passo temporale
 
-t = [0:N-1]*dt;
+t = [0:N-1]*dt; %vettore dei tempi, 30 campioni equispaziati di dt
 
-s = zeros(1, N);
-s(1:N/2) = 1;
-s(N/2+1:N) = 0;
+s = zeros(1, N); %vettore lungo N con tutti zeri
+s(1:N/2) = 1; %Sovrascrive la prima metà del vettore mettendo tutti 1.
+s(N/2+1:N) = 0; %La seconda metà resta a 0
 
 figure
 plot(t,s)
@@ -49,11 +49,25 @@ xlabel('t[s')
 ylabel('ampiezza')
 grid on
 
-S = dt/Tp*fft(s);
-S = [S(N/2+1:N), S(1:N/2)];
+S = dt/Tp*fft(s);%Calcola la FFT del segnale s.
 
-F = 1/Tp;
-f = [-N/2:N/2-1];
+Il fattore dt/Tp è una normalizzazione:
+
+fft(s) da solo produce i coefficienti della DFT discreta.
+
+Moltiplicando per dt (passo temporale) rendi coerente la somma discreta con l’integrale della trasformata di Fourier continua.
+
+Dividendo per Tp (durata totale) riporti lo spettro a valori normalizzati.
+
+In pratica: ottieni uno spettro con ampiezze “fisicamente corrette” (non dipendenti da N).
+S = [S(N/2+1:N), S(1:N/2)];%Riordina i coefficienti della FFT: la seconda metà viene spostata davanti.
+
+È lo stesso effetto di fftshift(S).
+
+Risultato: lo spettro viene centrato, così le frequenze negative stanno a sinistra e le positive a destra.
+
+F = 1/Tp;%Calcola la risoluzione in frequenza: distanza tra due punti spettrali
+f = [-N/2:N/2-1]; %vettore degli indici di frequenza
 
 figure
 stem(f, abs(s), 'filled');
