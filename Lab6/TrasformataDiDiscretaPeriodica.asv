@@ -1,20 +1,21 @@
 clear all, clf;
-T = 1e-3 % s
-N = 10
-N1 = 3
-A = 2 % V
+T = 1e-3 % s % periodo di campionamento (1 ms)
+N = 10  % numero di campioni
+N1 = 3 % numero di campioni in cui il segnale è attivo
+A = 2 % ampiezza del segnale (2 V)
 
-t = (0:N-1)*T
-x = A*(t <= N1*T)
+t = (0:N-1)*T % vettore dei tempi: [0, T, 2T, ... (N-1)T]
+x = A*(t <= N1*T) % definisce il segnale:
+                   % vale A (2 V) se t <= N1*T, altrimenti 0
 
 subplot(2,2,1)
 stem(t,x)
 xlabel('t[s]')
 ylabel('x(t) [V]')
 
-Fp = 1/T
-F = Fp/N
-f = (0:N-1)*F
+Fp = 1/T %frequenza di campionamento
+F = Fp/N %isoluzione in frequenza della DFT: distanza tra due righe spettrali consecutive.
+f = (0:N-1)*F %vettore delle frequenze
 X = fft(x)
 subplot(1,2,2)
 plot(f, real(X), 'r', f, imag(X), 'm')
@@ -23,7 +24,7 @@ ylabel('X(f) [Vs]')
 legend('Re X', 'Im X')
 
 df = 1 % Hz
-fa = 0:df:Fp
-Xa = A*T*(exp(-i*2*pi*fa*T*(N1+1))-1) ./ (exp(-i*2*pi*fa*T)-1) %./ fa la divisione punto a punto
+fa = 0:df:Fp %definisce una griglia di frequenze più densa (fa) da 0 a Fp, con passo 1 Hz.
+Xa = A*T*(exp(-i*2*pi*fa*T*(N1+1))-1) ./ (exp(-i*2*pi*fa*T)-1) % Formula analitica della DTFT del segnale rettangolare: calcola lo spettro esatto, in forma complessa, ./ fa la divisione punto a punto
 subplot(2,2,4)
 plot(fa, real(Xa), 'r', fa, imag(Xa), 'm','+')
